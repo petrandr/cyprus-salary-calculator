@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyprus Net Salary Calculator - Calculate Your Net Income in Cyprus</title>
-    <meta name="description" content="Use our Cyprus Net Salary Calculator to determine your net income by deducting Social Insurance, GHS, income tax, and other contributions from your gross salary.">
-    <meta name="keywords" content="Cyprus, Net Salary, Salary Calculator, Social Insurance, GHS, Cyprus Tax, Income Tax, Calculator">
+    <meta name="description"
+        content="Use our Cyprus Net Salary Calculator to determine your net income by deducting Social Insurance, GHS, income tax, and other contributions from your gross salary.">
+    <meta name="keywords"
+        content="Cyprus, Net Salary, Salary Calculator, Social Insurance, GHS, Cyprus Tax, Income Tax, Calculator">
     <meta name="author" content="Petros Andreou">
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content="Cyprus Net Salary Calculator">
-    <meta property="og:description" content="Calculate your net income in Cyprus by accounting for Social Insurance, GHS, income tax, and other deductions.">
+    <meta property="og:description"
+        content="Calculate your net income in Cyprus by accounting for Social Insurance, GHS, income tax, and other deductions.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://cyprus-salary-calculator.github.io/">
     <meta property="og:image" content="https://cyprus-salary-calculator.github.io/images/logo.webp">
@@ -19,207 +23,275 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Cyprus Net Salary Calculator">
-    <meta name="twitter:description" content="Calculate your net income in Cyprus by accounting for Social Insurance, GHS, income tax, and other deductions.">
+    <meta name="twitter:description"
+        content="Calculate your net income in Cyprus by accounting for Social Insurance, GHS, income tax, and other deductions.">
     <meta name="twitter:image" content="https://cyprus-salary-calculator.github.io/images/logo.webp">
 
-    <!-- Optional: Canonical URL -->
+    <!-- Canonical URL -->
     <link rel="canonical" href="https://cyprus-salary-calculator.github.io/">
-
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+    <!-- Modern CSS Framework -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link href="style.css" rel="stylesheet">
-
-    <script src="scripts/main.js" defer></script>
-    <script src="scripts/language.js" defer></script>
 </head>
-<body>
-<!-- Language selector -->
-<div class="language-selector pb-3 text-end">
-    <select id="languageSelect" onchange="changeLanguage(this.value)">
-        <option value="en">English</option>
-        <option value="gr">Ελληνικά</option>
-    </select>
-</div>
 
-<div class="container-fluid px-0 px-md-4">
-    <div class="row gx-5">
-        <div class="col-md-8 mt-2">
-            <div class="card text-dark bg-light">
-                <h4 class="card-header d-flex justify-content-between align-items-center w-100">
-                    <span id="mainTitle">Cyprus Net Salary Calculator</span>
-                    <i class="fa fa-print printCard" style="cursor: pointer;"></i>
-                </h4>
-                <div class="card-body">
-                    <div class="row mt-2">
-                        <div class="col-md-12 col-xl-6 mt-2">
-                            <div class="form-group">
-                                <label id="grossSalaryLabel" for="grossSalary">Gross Salary</label>
-                                <div class="input-group select-group">
-                                    <span class="input-group-text">€</span>
-                                    <input type="number" id="grossSalary" class="form-control" placeholder="">
-                                    <select id="salaryType" class="form-select input-group-addon">
-                                        <option class="monthlyLabel" value="monthly">Monthly</option>
-                                        <option class="annuallyLabel" value="yearly">Yearly</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-xl-6 mt-2">
-                            <div class="form-group">
-                                <label id="lifeInsuranceLabel" for="lifeInsurance">Life Insurance Premium</label>
-                                <div class="input-group select-group">
-                                    <span class="input-group-text">€</span>
-                                    <input type="number" id="lifeInsurance" class="form-control" placeholder="">
-                                    <select id="insuranceType" class="form-select input-group-addon">
-                                        <option class="monthlyLabel" value="monthly">Monthly</option>
-                                        <option class="annuallyLabel" value="yearly">Yearly</option>
-                                    </select>
-                                    <div id="lifeInsuranceLimit" class="invalid-feedback">
-                                        Life Insurance Premium cannot exceed 1/5 of the Gross Salary
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-xl-6 mt-2">
-                            <div class="form-group">
-                                <label id="providentFundLabel" for="providentFund">Provident Fund</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">%</span>
-                                    <input type="number" min="0" max="100" id="providentFund" class="form-control" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-xl-6 mt-2">
-                            <div class="form-group">
-                                <label id="unionLabel" for="union">Union</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">%</span>
-                                    <input type="number" min="0" max="100" id="union" class="form-control" placeholder="">
-                                </div>
-                            </div>
+<body>
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <div class="language-toggle">
+            <button class="language-btn" data-lang="en" onclick="changeLanguage('en')">EN</button>
+            <button class="language-btn" data-lang="gr" onclick="changeLanguage('gr')">ΕΛ</button>
+            <div class="language-slider"></div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 id="mainTitle" class="text-4xl md:text-5xl font-bold text-white mb-4">
+                Cyprus Net Salary Calculator
+            </h1>
+            <p class="subtitle text-xl text-blue-100 max-w-2xl mx-auto">
+                Calculate your net income in Cyprus with accurate deductions for Social Insurance, GHS, and income tax
+            </p>
+        </div>
+
+        <!-- Centered Calculator Section -->
+        <div class="flex justify-center">
+            <div class="w-full max-w-5xl">
+                <div class="glass-card rounded-2xl p-6 md:p-8">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="salaryCalculatorTitle text-2xl font-bold text-gray-800">Salary Calculator</h2>
+                        <div class="flex gap-3">
+                            <button class="btn-secondary" onclick="toggleOffcanvas()">
+                                <i class="fas fa-info-circle mr-2"></i><span class="howItWorksButton">How It Works</span>
+                            </button>
+                            <button class="btn-primary" onclick="printResults()">
+                                <i class="fas fa-print mr-2"></i><span class="printButton">Print</span>
+                            </button>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 col-xl-6 mt-2">
-                            <div class="form-group">
-                                <label id="otherDeductionsLabel" for="otherDeductions">Other Tax Deductions</label>
-                                <div class="input-group select-group">
-                                    <span class="input-group-text">€</span>
-                                    <input type="number" id="otherDeductions" class="form-control" placeholder="">
-                                    <select class="form-select input-group-addon" disabled="disabled">
-                                        <option class="monthlyLabel" value="monthly">Monthly</option>
-                                        <option class="annuallyLabel" value="yearly" selected="selected">Yearly</option>
-                                    </select>
+
+                    <!-- Input Form -->
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <!-- Gross Salary -->
+                        <div class="input-group">
+                            <label id="grossSalaryLabel" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Gross Salary
+                            </label>
+                            <div class="flex gap-2 input-flex-container">
+                                <div class="flex-1 relative">
+                                    <span class="input-prefix">€</span>
+                                    <input type="number" id="grossSalary" class="input-field has-prefix"
+                                        placeholder="Enter amount">
                                 </div>
+                                <select id="salaryType" class="input-field select-field w-32">
+                                    <option class="monthlyLabel" value="monthly">Monthly</option>
+                                    <option class="annuallyLabel" value="yearly">Yearly</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-md-12 col-xl-6 mt-4 d-flex align-items-center">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="thirteenSalary">
-                                <label class="form-check-label" for="thirteenSalary">
+
+                        <!-- Life Insurance -->
+                        <div class="input-group">
+                            <label id="lifeInsuranceLabel" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Life Insurance Premium
+                            </label>
+                            <div class="flex gap-2 input-flex-container">
+                                <div class="flex-1 relative">
+                                    <span class="input-prefix">€</span>
+                                    <input type="number" id="lifeInsurance" class="input-field has-prefix"
+                                        placeholder="Enter amount">
+                                </div>
+                                <select id="insuranceType" class="input-field select-field w-32">
+                                    <option class="monthlyLabel" value="monthly">Monthly</option>
+                                    <option class="annuallyLabel" value="yearly">Yearly</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Provident Fund -->
+                        <div class="input-group">
+                            <label id="providentFundLabel" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Provident Fund
+                            </label>
+                            <div class="relative">
+                                <span class="input-prefix">%</span>
+                                <input type="number" min="0" max="100" id="providentFund" class="input-field has-prefix"
+                                    placeholder="Enter percentage">
+                            </div>
+                        </div>
+
+                        <!-- Union -->
+                        <div class="input-group">
+                            <label id="unionLabel" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Union
+                            </label>
+                            <div class="relative">
+                                <span class="input-prefix">%</span>
+                                <input type="number" min="0" max="100" id="union" class="input-field has-prefix"
+                                    placeholder="Enter percentage">
+                            </div>
+                        </div>
+
+                        <!-- Other Deductions -->
+                        <div class="input-group">
+                            <label id="otherDeductionsLabel" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Other Tax Deductions
+                            </label>
+                            <div class="relative">
+                                <span class="input-prefix">€</span>
+                                <input type="number" id="otherDeductions" class="input-field has-prefix"
+                                    placeholder="Annual amount">
+                            </div>
+                            <p class="annualAmountOnlyLabel text-sm text-gray-500 mt-1">Annual amount only</p>
+                        </div>
+
+                        <!-- Thirteen Salary Checkbox -->
+                        <div class="input-group">
+                            <label class="additionalOptionsLabel block text-sm font-semibold text-gray-700 mb-2">
+                                Additional Options
+                            </label>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="thirteenSalary" class="rounded">
+                                <label for="thirteenSalary" class="thirteenSalaryLabel text-sm font-medium text-gray-700">
                                     Thirteen salary
                                 </label>
                             </div>
                         </div>
-
                     </div>
 
-                    <hr>
-
-                    <!-- Results (you may also want to add IDs or data attributes to these texts if needed) -->
-                    <div id="resultsContainer">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5 class="annuallyLabel fw-bold">Annually</h5>
-                                <table class="table table-bordered table-striped">
-                                    <tbody>
-                                    <tr>
-                                        <td class="grossLabel">Gross</td>
-                                        <td id="annualGross">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="taxableLabel">Taxable Income</td>
-                                        <td id="annualTaxable">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="taxLabel">Tax</td>
-                                        <td id="annualTax">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="socialInsuranceLabel">Social Insurance</td>
-                                        <td id="annualSocialInsurance">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="gesyLabel">General Healthcare System (GHS)</td>
-                                        <td id="annualGesy">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="providentFundTitle">Provident Fund</td>
-                                        <td id="annualProvidentFund">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="unionTitle">Union</td>
-                                        <td id="annualUnion">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="netLabel fw-bold">Net</td>
-                                        <td id="annualNet" class="fw-bold">€0.00</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-md-6">
-                                <h5 class="monthlyLabel fw-bold">Monthly</h5>
-                                <table class="table table-bordered table-striped">
-                                    <tbody>
-                                    <tr>
-                                        <td class="grossLabel">Gross</td>
-                                        <td id="monthlyGross">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="taxableLabel">Taxable Income</td>
-                                        <td id="monthlyTaxable">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="taxLabel">Tax</td>
-                                        <td id="monthlyTax">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="socialInsuranceLabel">Social Insurance</td>
-                                        <td id="monthlySocialInsurance">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="gesyLabel">General Healthcare System (GHS)</td>
-                                        <td id="monthlyGesy">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="providentFundTitle">Provident Fund</td>
-                                        <td id="monthlyProvidentFund">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="unionTitle">Union</td>
-                                        <td id="monthlyUnion">€0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="netLabel fw-bold">Net</td>
-                                        <td id="monthlyNet" class="fw-bold">€0.00</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                    <!-- Deductions Warning -->
+                    <div id="deductionsWarning" class="deductions-warning mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 mt-1 mr-3"></i>
+                            <div class="flex-1">
+                                <h4 class="deductionsWarningTitle font-semibold text-yellow-800 mb-2">Tax Deduction Limit Exceeded</h4>
+                                <p class="deductionsWarningText text-sm text-yellow-700 mb-2">
+                                    According to Cyprus tax law, total deductions cannot exceed 20% of gross salary for tax purposes.
+                                </p>
+                                <div class="text-sm text-yellow-700">
+                                    <p><strong class="effectiveDeductionsLabel">Effective tax deductions:</strong> <span id="effectiveDeductionsAmount">€0.00</span> (20%)</p>
+                                    <p><strong class="excessDeductionsLabel">Amount exceeding limit:</strong> <span id="excessDeductionsAmount">€0.00</span></p>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <h5 class="mt-4 fw-bold">Tax Breakdown</h5>
-                                <table class="table table-bordered" id="breakdownTable" style="display: none;">
+                    </div>
+
+                    <!-- Results Section -->
+                    <div id="resultsContainer" class="hidden">
+                        <h3 class="salaryBreakdownTitle text-xl font-bold text-gray-800 mb-6">Salary Breakdown</h3>
+
+                        <div class="grid md:grid-cols-2 gap-6 mb-8">
+                            <!-- Annual Results -->
+                            <div class="result-card">
+                                <h4 class="annuallyLabel text-lg font-semibold text-gray-800 mb-4">Annually</h4>
+                                <div class="result-item">
+                                    <span class="grossLabel text-gray-600">Gross</span>
+                                    <span id="annualGross" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="taxableLabel text-gray-600">Taxable Income</span>
+                                    <span id="annualTaxable" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="taxLabel text-gray-600">Tax</span>
+                                    <span id="annualTax" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="socialInsuranceLabel text-gray-600">Social Insurance</span>
+                                    <span id="annualSocialInsurance" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="gesyLabel text-gray-600">GHS</span>
+                                    <span id="annualGesy" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="providentFundTitle text-gray-600">Provident Fund</span>
+                                    <span id="annualProvidentFund" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="unionTitle text-gray-600">Union</span>
+                                    <span id="annualUnion" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item total-deductions">
+                                    <div class="flex flex-col">
+                                        <span class="totalDeductionsLabel text-gray-700 font-semibold">Total Deductions</span>
+                                        <span class="deductionsNoticeLabel text-xs text-gray-500 mt-1">Excludes income tax</span>
+                                    </div>
+                                    <div class="flex flex-col items-end">
+                                        <span id="annualTotalDeductions" class="font-semibold text-red-600">€0.00</span>
+                                        <span id="annualDeductionsPercentage" class="text-xs text-red-500">0.00%</span>
+                                    </div>
+                                </div>
+                                <div class="result-item net">
+                                    <span class="netLabel">Net Salary</span>
+                                    <span id="annualNet">€0.00</span>
+                                </div>
+                            </div>
+
+                            <!-- Monthly Results -->
+                            <div class="result-card">
+                                <h4 class="monthlyLabel text-lg font-semibold text-gray-800 mb-4">Monthly</h4>
+                                <div class="result-item">
+                                    <span class="grossLabel text-gray-600">Gross</span>
+                                    <span id="monthlyGross" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="taxableLabel text-gray-600">Taxable Income</span>
+                                    <span id="monthlyTaxable" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="taxLabel text-gray-600">Tax</span>
+                                    <span id="monthlyTax" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="socialInsuranceLabel text-gray-600">Social Insurance</span>
+                                    <span id="monthlySocialInsurance" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="gesyLabel text-gray-600">GHS</span>
+                                    <span id="monthlyGesy" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="providentFundTitle text-gray-600">Provident Fund</span>
+                                    <span id="monthlyProvidentFund" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="unionTitle text-gray-600">Union</span>
+                                    <span id="monthlyUnion" class="font-semibold">€0.00</span>
+                                </div>
+                                <div class="result-item total-deductions">
+                                    <div class="flex flex-col">
+                                        <span class="totalDeductionsLabel text-gray-700 font-semibold">Total Deductions</span>
+                                        <span class="deductionsNoticeLabel text-xs text-gray-500 mt-1">Excludes income tax</span>
+                                    </div>
+                                    <div class="flex flex-col items-end">
+                                        <span id="monthlyTotalDeductions" class="font-semibold text-red-600">€0.00</span>
+                                        <span id="monthlyDeductionsPercentage" class="text-xs text-red-500">0.00%</span>
+                                    </div>
+                                </div>
+                                <div class="result-item net">
+                                    <span class="netLabel">Net Salary</span>
+                                    <span id="monthlyNet">€0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tax Breakdown -->
+                        <div class="result-card">
+                            <h4 class="taxBreakdownTitle text-lg font-semibold text-gray-800 mb-4">Tax Breakdown (Updated: Jan 2026)</h4>
+                            <div class="overflow-x-auto">
+                                <table id="breakdownTable" class="w-full text-sm">
                                     <thead>
-                                    <tr>
-                                        <th>Start</th>
-                                        <th>End</th>
-                                        <th>Rate</th>
-                                        <th>Tax Deducted</th>
-                                    </tr>
+                                        <tr class="border-b-2 border-gray-200">
+                                            <th class="text-left py-3 px-2">Start</th>
+                                            <th class="text-left py-3 px-2">End</th>
+                                            <th class="text-left py-3 px-2">Rate</th>
+                                            <th class="text-left py-3 px-2">Tax Deducted</th>
+                                        </tr>
                                     </thead>
                                     <tbody id="taxBreakdown"></tbody>
                                 </table>
@@ -229,81 +301,160 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mt-2">
-            <div class="row">
-                <div class="col-12">
-                    <div id="howItWorks" class="card text-dark bg-light">
-                        <h4 class="card-header">
-                            <button class="btn btn-link text-dark text-decoration-none d-flex justify-content-between align-items-center w-100 p-0 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHowItWorks" aria-expanded="true" aria-controls="collapseHowItWorks">
-                                <span id="howItWorksTitle">How It Works</span>
-                                <i class="fa fa-chevron-up rotate-icon"></i>
-                            </button>
-                        </h4>
-                        <div id="collapseHowItWorks" class="collapse show">
-                            <div class="card-body">
-                                <!-- INTRO -->
-                                <p id="explanationIntro">
+    </div>
 
-                                </p>
+    <!-- Offcanvas Overlay -->
+    <div id="offcanvasOverlay" class="offcanvas-overlay" onclick="closeOffcanvas()"></div>
 
-                                <!-- GROSS SALARY -->
-                                <h5 id="grossSalaryTitle">Gross Salary</h5>
-                                <p id="grossSalaryText"></p>
+    <!-- Offcanvas Panel -->
+    <div id="offcanvasPanel" class="offcanvas-panel">
+        <div class="offcanvas-header">
+            <h3 id="howItWorksTitle" class="text-xl font-bold text-gray-800">How It Works</h3>
+            <button class="offcanvas-close" onclick="closeOffcanvas()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="offcanvas-content">
+            <p id="explanationIntro" class="text-gray-600 mb-6">
+                This calculator helps you determine your net salary in Cyprus by deducting Social Insurance, the General
+                Healthcare System (GHS), income tax, and any other optional or mandatory contributions from your gross
+                salary.
+            </p>
 
-                                <!-- LIFE INSURANCE -->
-                                <h5 id="lifeInsuranceTitle">Life Insurance Premium</h5>
-                                <p id="lifeInsuranceText"></p>
+            <div class="space-y-6">
+                <div>
+                    <h5 id="grossSalaryTitle" class="font-semibold text-gray-800 mb-2">Gross Salary</h5>
+                    <p id="grossSalaryText" class="text-sm text-gray-600">Your total salary before any deductions. You
+                        can enter it monthly or yearly.</p>
+                </div>
 
-                                <!-- PROVIDENT FUND -->
-                                <h5 id="providentFundTitle">Provident Fund</h5>
-                                <p id="providentFundText"></p>
+                <div>
+                    <h5 id="lifeInsuranceTitle" class="font-semibold text-gray-800 mb-2">Life Insurance Premium</h5>
+                    <p id="lifeInsuranceText" class="text-sm text-gray-600">The amount you pay for a life insurance
+                        policy. Some or all of this may be tax-deductible (depending on the legal limits). Enter it
+                        monthly or yearly.</p>
+                </div>
 
-                                <!-- UNION -->
-                                <h5 id="unionTitle">Union</h5>
-                                <p id="unionText"></p>
+                <div>
+                    <h5 id="providentFundTitle" class="font-semibold text-gray-800 mb-2">Provident Fund</h5>
+                    <p id="providentFundText" class="text-sm text-gray-600">A retirement or savings plan (often
+                        employer-sponsored). The contribution is typically a percentage of your gross salary and may
+                        reduce your taxable income.</p>
+                </div>
 
-                                <!-- OTHER TAX DEDUCTIONS -->
-                                <h5 id="otherDeductionsTitle">Other Tax Deductions</h5>
-                                <p id="otherDeductionsText"></p>
+                <div>
+                    <h5 id="unionTitle" class="font-semibold text-gray-800 mb-2">Union</h5>
+                    <p id="unionText" class="text-sm text-gray-600">If you belong to a professional union or
+                        association, you might pay a percentage of your salary as union fees. These fees can sometimes
+                        be deducted from your taxable income.</p>
+                </div>
 
-                                <!-- SOCIAL INSURANCE & GHS -->
-                                <h5 id="socialInsuranceTitle">Social Insurance &amp; GHS</h5>
-                                <p id="socialInsuranceText"></p>
+                <div>
+                    <h5 id="otherDeductionsTitle" class="font-semibold text-gray-800 mb-2">Other Tax Deductions</h5>
+                    <p id="otherDeductionsText" class="text-sm text-gray-600">Any additional deductible expenses or
+                        allowances you can legally claim (e.g., charitable donations, specific social contributions,
+                        etc.). Enter the annual total here if applicable.</p>
+                </div>
 
-                                <!-- TAXABLE INCOME -->
-                                <h5 id="taxableIncomeTitle">Taxable Income</h5>
-                                <p id="taxableIncomeText">
-                                </p>
+                <div>
+                    <h5 id="socialInsuranceTitle" class="font-semibold text-gray-800 mb-2">Social Insurance & GHS</h5>
+                    <p id="socialInsuranceText" class="text-sm text-gray-600">Mandatory contributions in Cyprus. The
+                        calculator deducts these amounts from your gross salary before calculating taxable income.</p>
+                </div>
 
-                                <!-- NET SALARY CALCULATION -->
-                                <h5 id="netSalaryTitle">Net Salary Calculation</h5>
-                                <p id="netSalaryText">
-                                    Once the taxable income is determined, the calculator applies the Cyprus tax brackets
-                                    to calculate your income tax. Your <strong>net salary</strong> is then:
-                                    <br/>
-                                    <strong>Gross Salary - (All Contributions + Tax)</strong>
-                                    <br/>
-                                    The result is your take-home pay, shown with both monthly and annual breakdowns.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <h5 id="taxableIncomeTitle" class="font-semibold text-gray-800 mb-2">Taxable Income</h5>
+                    <p id="taxableIncomeText" class="text-sm text-gray-600">Taxable Income is calculated as: Gross
+                        Salary - (Social Insurance + GHS + Life Insurance + Provident Fund + Union Fees + Other
+                        Deductions). The exact deductibility of each item may depend on current Cyprus tax laws.</p>
+                </div>
+
+                <div>
+                    <h5 id="netSalaryTitle" class="font-semibold text-gray-800 mb-2">Net Salary Calculation</h5>
+                    <p id="netSalaryText" class="text-sm text-gray-600">Once the taxable income is determined, the
+                        calculator applies the Cyprus tax brackets to calculate your income tax. Your net salary is
+                        then: Gross Salary - (All Contributions + Tax). The result is your take-home pay, shown with
+                        both monthly and annual breakdowns.</p>
                 </div>
             </div>
         </div>
     </div>
 
-</div>
-</body>
-<footer class="fixed-footer">
-    <div class="container text-center">
-        <p>&copy; 2025 Created by <a href="https://github.com/petrandr" target="_blank">Petros Andreou</a></p>
-        <p class="disclaimerText">
-            Disclaimer: This tool is provided for informational purposes only and we cannot guarantee its validity. Use at your own risk. This site does not collect or store any personal data.
-        </p>
-    </div>
-</footer>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container mx-auto px-4">
+            <p>&copy; 2025 <span class="createdByText">Created by</span> <a href="https://github.com/petrandr" target="_blank">Petros Andreou</a></p>
+            <p class="disclaimerText text-sm mt-2 opacity-80">
+                Disclaimer: This tool is provided for informational purposes only and we cannot guarantee its validity.
+                Use at your own risk. This site does not collect or store any personal data.
+            </p>
+        </div>
+    </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/language.js"></script>
+    <script>
+        function printResults() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            if (resultsContainer.classList.contains('hidden')) {
+                alert('Please calculate your salary first!');
+                return;
+            }
+
+            const printContent = resultsContainer.innerHTML;
+            const printWindow = window.open('', '', 'width=800,height=600');
+
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Cyprus Salary Calculator Results</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .result-card { margin-bottom: 20px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+                        .result-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+                        .result-item:last-child { border-bottom: none; }
+                        .net { background: #f0f9ff; font-weight: bold; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+                        th { background: #f5f5f5; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Cyprus Salary Calculator Results</h1>
+                    ${printContent}
+                    <script>window.onload = function() { window.print(); }<\/script>
+                </body>
+                </html>
+            `);
+
+            printWindow.document.close();
+        }
+
+        function toggleOffcanvas() {
+            const overlay = document.getElementById('offcanvasOverlay');
+            const panel = document.getElementById('offcanvasPanel');
+
+            overlay.classList.add('active');
+            panel.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOffcanvas() {
+            const overlay = document.getElementById('offcanvasOverlay');
+            const panel = document.getElementById('offcanvasPanel');
+
+            overlay.classList.remove('active');
+            panel.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close offcanvas with Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeOffcanvas();
+            }
+        });
+    </script>
+</body>
 
 </html>

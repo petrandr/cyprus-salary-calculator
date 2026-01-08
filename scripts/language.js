@@ -3,11 +3,21 @@
 const translations = {
     en: {
         mainTitle: "Cyprus Net Salary Calculator",
+        subtitle: "Calculate your net income in Cyprus with accurate deductions for Social Insurance, GHS, and income tax",
+        salaryCalculatorTitle: "Salary Calculator",
+        howItWorksButton: "How It Works",
+        printButton: "Print",
         grossSalaryLabel: "Gross Salary",
         lifeInsuranceLabel: "Life Insurance Premium",
         providentFundLabel: "Provident Fund",
         unionLabel: "Union",
         otherDeductionsLabel: "Other Tax Deductions",
+        additionalOptionsLabel: "Additional Options",
+        thirteenSalaryLabel: "Thirteen salary",
+        annualAmountOnlyLabel: "Annual amount only",
+        enterAmountPlaceholder: "Enter amount",
+        enterPercentagePlaceholder: "Enter percentage",
+        annualAmountPlaceholder: "Annual amount",
         calculateButton: "Calculate Net Salary",
         // Table translations
         annuallyLabel: "Annually",
@@ -18,6 +28,10 @@ const translations = {
         socialInsuranceLabel: "Social Insurance",
         gesyLabel: "General Healthcare System (GHS)",
         netLabel: "Net",
+        totalDeductionsLabel: "Total Deductions",
+        deductionsNoticeLabel: "Excludes income tax",
+        salaryBreakdownTitle: "Salary Breakdown",
+        taxBreakdownTitle: "Tax Breakdown (Updated: Jan 2026)",
         howItWorksTitle: "How It Works",
         explanationIntro: "This calculator helps you determine your net salary in Cyprus by deducting Social Insurance, the General Healthcare System (GHS), income tax, and any other optional or mandatory contributions from your gross salary.",
         grossSalaryTitle: "Gross Salary",
@@ -38,24 +52,43 @@ const translations = {
         netSalaryText: "Once the taxable income is determined, the calculator applies the Cyprus tax brackets to calculate your income tax. Your net salary is then: Gross Salary - (All Contributions + Tax). The result is your take-home pay, shown with both monthly and annual breakdowns.",
         disclaimerText: "Disclaimer: This tool is provided for informational purposes only and we cannot guarantee its validity. Use at your own risk. This site does not collect or store any personal data.",
         lifeInsuranceLimit: "Life Insurance Premium cannot exceed 1/5 of the Gross Salary",
+        deductionsWarningTitle: "Tax Deduction Limit Exceeded",
+        deductionsWarningText: "Under Cyprus tax law, personal tax deductions are limited to 20% of chargeable income.",
+        effectiveDeductionsLabel: "Maximum allowable deductions:",
+        excessDeductionsLabel: "Amount exceeding limit:",
+        createdByText: "Created by",
     },
     gr: {
         mainTitle: "Υπολογιστής Καθαρού Μισθού Κύπρου",
+        subtitle: "Υπολογίστε το καθαρό σας εισόδημα στην Κύπρο με ακριβείς εκπτώσεις για Κοινωνικές Ασφαλίσεις, ΓΕΣΥ και φόρο εισοδήματος",
+        salaryCalculatorTitle: "Υπολογιστής Μισθού",
+        howItWorksButton: "Πώς Λειτουργεί",
+        printButton: "Εκτύπωση",
         grossSalaryLabel: "Μικτός Μισθός",
         lifeInsuranceLabel: "Ασφάλεια Ζωής",
         providentFundLabel: "Ταμείο Προνοίας",
         unionLabel: "Συντεχνία",
         otherDeductionsLabel: "Άλλες Φορολογικές Εκπτώσεις",
+        additionalOptionsLabel: "Επιπλέον Επιλογές",
+        thirteenSalaryLabel: "Δεκάτος τρίτος μισθός",
+        annualAmountOnlyLabel: "Μόνο ετήσιο ποσό",
+        enterAmountPlaceholder: "Εισάγετε ποσό",
+        enterPercentagePlaceholder: "Εισάγετε ποσοστό",
+        annualAmountPlaceholder: "Ετήσιο ποσό",
         calculateButton: "Υπολογίστε Καθαρό Μισθό",
         // Table translations
         grossLabel: "Μικτός",
         taxableLabel: "Φορολογητέο Εισόδημα",
         taxLabel: "Φόρος",
-        socialInsuranceLabel: "Κοινωνικές Ασφαλίσεις ",
+        socialInsuranceLabel: "Κοινωνικές Ασφαλίσεις",
         gesyLabel: "Γενικό Σύστημα Υγείας (ΓΕΣΥ)",
         netLabel: "Καθαρός Μισθός",
+        totalDeductionsLabel: "Συνολικές Κρατήσεις",
+        deductionsNoticeLabel: "Εξαιρουμένου του φόρου εισοδήματος",
         annuallyLabel: "Ετήσια",
         monthlyLabel: "Μηνιαία",
+        salaryBreakdownTitle: "Ανάλυση Μισθού",
+        taxBreakdownTitle: "Ανάλυση Φόρου (Ενημερώθηκε: Ιαν 2026)",
         howItWorksTitle: "Πώς Λειτουργεί",
         explanationIntro: "Αυτός ο υπολογιστής σας βοηθά να προσδιορίσετε τον καθαρό σας μισθό στην Κύπρο, αφαιρώντας τις Κοινωνικές Ασφαλίσεις, το Γενικό Σύστημα Υγείας (ΓΕΣΥ), τον φόρο εισοδήματος, καθώς και τυχόν άλλες προαιρετικές ή υποχρεωτικές εισφορές από τον μικτό σας μισθό.",
         grossSalaryTitle: "Μικτός Μισθός",
@@ -76,17 +109,58 @@ const translations = {
         netSalaryText: "Αφού προσδιοριστεί το φορολογητέο εισόδημα, ο υπολογιστής εφαρμόζει τις κυπριακές φορολογικές κλίμακες για να υπολογίσει τον φόρο εισοδήματος. Ο καθαρός μισθός σας προκύπτει ως: Μικτός Μισθός - (Όλες οι Εισφορές + Φόρος). Το αποτέλεσμα είναι ο μισθός που λαμβάνετε, εμφανιζόμενο με μηνιαία και ετήσια ανάλυση.",
         disclaimerText: "Αποποίηση Ευθύνης: Αυτό το εργαλείο παρέχεται αποκλειστικά για ενημερωτικούς σκοπούς και δεν μπορούμε να εγγυηθούμε την εγκυρότητά του. Χρησιμοποιήστε το με δική σας ευθύνη. Αυτός ο ιστότοπος δεν συλλέγει ούτε αποθηκεύει προσωπικά δεδομένα.",
         lifeInsuranceLimit: "Το ασφάλιστρο ζωής δεν μπορεί να υπερβαίνει το 1/5 του μικτού μισθού.",
+        deductionsWarningTitle: "Υπέρβαση Ορίου Φορολογικών Εκπτώσεων",
+        deductionsWarningText: "Σύμφωνα με τον κυπριακό φορολογικό νόμο, οι προσωπικές φορολογικές εκπτώσεις περιορίζονται στο 20% του φορολογητέου εισοδήματος.",
+        effectiveDeductionsLabel: "Μέγιστες επιτρεπόμενες εκπτώσεις:",
+        excessDeductionsLabel: "Ποσό που υπερβαίνει το όριο:",
+        createdByText: "Δημιουργήθηκε από",
     }
 };
 
 function changeLanguage(lang) {
+    // Update button states for the new toggle design
+    document.querySelectorAll('.language-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    const activeBtn = document.querySelector(`[data-lang="${lang}"]`);
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
+
+    // Update slider position
+    const slider = document.querySelector('.language-slider');
+    if (slider) {
+        if (lang === 'gr') {
+            slider.classList.add('greek');
+        } else {
+            slider.classList.remove('greek');
+        }
+    }
+
     // Optionally update the document's language attribute
     document.documentElement.lang = lang;
 
+    // Apply text translations
     Object.keys(translations[lang]).forEach(key => {
         document.querySelectorAll(`#${key}, .${key}`).forEach(el => {
             el.innerText = translations[lang][key];
         });
+    });
+
+    // Handle placeholder translations
+    const placeholderMappings = {
+        'grossSalary': 'enterAmountPlaceholder',
+        'lifeInsurance': 'enterAmountPlaceholder',
+        'providentFund': 'enterPercentagePlaceholder',
+        'union': 'enterPercentagePlaceholder',
+        'otherDeductions': 'annualAmountPlaceholder'
+    };
+
+    Object.keys(placeholderMappings).forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.placeholder = translations[lang][placeholderMappings[inputId]];
+        }
     });
 
     // Store the selected language in localStorage
@@ -97,6 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Retrieve the stored language or default to 'en'
     const defaultLang = localStorage.getItem('preferredLanguage') || 'en';
 
-    document.getElementById('languageSelect').value = defaultLang;
+    // Initialize the toggle instead of the old select
     changeLanguage(defaultLang);
 });

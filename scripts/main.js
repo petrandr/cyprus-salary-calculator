@@ -10,13 +10,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const collapseElement = document.getElementById("collapseHowItWorks");
     const iconElement = document.querySelector("#howItWorks i");
 
-    collapseElement.addEventListener("show.bs.collapse", function () {
-        iconElement.classList.remove("fa-rotate-180");
-    });
+    if (collapseElement && iconElement) {
+        collapseElement.addEventListener("show.bs.collapse", function () {
+            iconElement.classList.remove("fa-rotate-180");
+        });
 
-    collapseElement.addEventListener("hide.bs.collapse", function () {
-        iconElement.classList.add("fa-rotate-180");
-    });
+        collapseElement.addEventListener("hide.bs.collapse", function () {
+            iconElement.classList.add("fa-rotate-180");
+        });
+    }
 });
 
 document.addEventListener("click", function (event) {
@@ -83,10 +85,14 @@ function calculateNetSalary() {
             lifeInsurance *= 12;
         }
 
-        if (lifeInsurance > lifeInsuranceLimit) {
-            document.getElementById('lifeInsurance').classList.add("is-invalid");
-        } else {
-            document.getElementById('lifeInsurance').classList.remove("is-invalid");
+        // Remove the incorrect individual life insurance validation
+        const lifeInsuranceField = document.getElementById('lifeInsurance');
+        const lifeInsuranceLimitMsg = document.getElementById('lifeInsuranceLimit');
+
+        // Always remove the old error since it's not the correct validation
+        lifeInsuranceField.classList.remove("is-invalid");
+        if (lifeInsuranceLimitMsg) {
+            lifeInsuranceLimitMsg.classList.remove("show");
         }
 
         // Calculate the annual provident fund amount as a percentage of gross salary.
@@ -106,18 +112,41 @@ function calculateNetSalary() {
         let gesy = grossSalary * 0.0265;
 
         // Calculate the taxable income by subtracting various deductions.
-        // Note: providentFund here is not the computed amount but the input percentage value.
-        let taxableIncome = grossSalary - (
+        // Note: We'll recalculate this after checking the 20% limit
+        let preliminaryTaxableIncome = grossSalary - (
             socialInsurance + gesy + lifeInsurance + unionAmount + providentFundAmount + otherDeductions
         );
 
+        // Calculate total deductions and percentage (excluding tax)
+        let totalDeductions = socialInsurance + gesy + providentFundAmount + unionAmount + lifeInsurance;
+        let deductionsPercentage = (totalDeductions / grossSalary) * 100;
+
+        // Check if total deductions exceed 20% limit according to Cyprus tax law
+        const maxDeductionsPercentage = 20;
+        const maxDeductionsAmount = grossSalary * 0.20;
+        let deductionsWarning = null;
+        let effectiveDeductions = totalDeductions;
+
+        if (deductionsPercentage > maxDeductionsPercentage) {
+            effectiveDeductions = maxDeductionsAmount;
+            const excessAmount = totalDeductions - maxDeductionsAmount;
+            deductionsWarning = {
+                effectiveAmount: effectiveDeductions,
+                excessAmount: excessAmount,
+                effectivePercentage: maxDeductionsPercentage
+            };
+        }
+
+        // Calculate the ACTUAL taxable income using effective deductions (capped at 20%)
+        let taxableIncome = grossSalary - effectiveDeductions;
+
         // Define the tax brackets with their income ranges and corresponding tax rates.
         let taxBrackets = [
-            {min: 0, limit: 19500, rate: 0},
-            {min: 19501, limit: 28000, rate: 0.2},
-            {min: 28001, limit: 36300, rate: 0.25},
-            {min: 36301, limit: 60000, rate: 0.3},
-            {min: 60001, limit: Infinity, rate: 0.35}
+            { min: 0, limit: 22000, rate: 0 },
+            { min: 22001, limit: 32000, rate: 0.2 },
+            { min: 32001, limit: 42000, rate: 0.25 },
+            { min: 42001, limit: 72000, rate: 0.3 },
+            { min: 72001, limit: Infinity, rate: 0.35 }
         ];
 
         // Initialize total tax and HTML string for the breakdown table.
@@ -136,49 +165,126 @@ function calculateNetSalary() {
                 tax += taxAmount;
 
                 // Append the breakdown information for this bracket as a table row.
-                breakdownHTML += `<tr>
-                      <td>€${formatNumber(bracket.min)}</td>
-                      <td>€${formatNumber(bracket.limit)}</td>
-                      <td>${bracket.rate * 100}%</td>
-                      <td>€${formatNumber(taxAmount)}</td>
+                breakdownHTML += `<tr class="border-b border-gray-100">
+                      <td class="py-2 px-2">€${formatNumber(bracket.min)}</td>
+                      <td class="py-2 px-2">€${formatNumber(bracket.limit === Infinity ? 999999 : bracket.limit)}</td>
+                      <td class="py-2 px-2">${bracket.rate * 100}%</td>
+                      <td class="py-2 px-2">€${formatNumber(taxAmount)}</td>
                     </tr>`;
             }
         }
 
-        // Calculate the net salary by subtracting all deductions and tax from the gross salary.
+        // Calculate the net salary by subtracting effective deductions and tax from the gross salary.
+        // Note: We use effectiveDeductions (capped at 20%) for tax calculation, but actual deductions for net salary
         let netSalary = grossSalary - (socialInsurance + gesy + providentFundAmount + unionAmount + tax);
 
         // Hide the loading indicator now that processing is complete.
         // document.getElementById('loading').style.display = 'none';
 
         // Display the results container and the breakdown table.
-        document.getElementById('resultsContainer').style.display = 'block';
-        document.getElementById('breakdownTable').style.display = 'table';
+        const resultsContainer = document.getElementById('resultsContainer');
+        const breakdownTable = document.getElementById('breakdownTable');
+
+        if (resultsContainer) {
+            resultsContainer.classList.remove('hidden');
+        }
+
+        if (breakdownTable) {
+            breakdownTable.style.display = 'table';
+        }
 
         // Populate the tax breakdown table with the generated HTML.
-        document.getElementById('taxBreakdown').innerHTML = breakdownHTML;
+        const taxBreakdownElement = document.getElementById('taxBreakdown');
+        if (taxBreakdownElement) {
+            taxBreakdownElement.innerHTML = breakdownHTML;
+        }
 
         // Display various annual amounts formatted with the Euro symbol.
-        document.getElementById('annualGross').innerText = '€' + formatNumber(grossSalary);
-        document.getElementById('annualTaxable').innerText = '€' + formatNumber(taxableIncome);
-        document.getElementById('annualTax').innerText = '€' + formatNumber(tax);
-        document.getElementById('annualSocialInsurance').innerText = '€' + formatNumber(socialInsurance);
-        document.getElementById('annualGesy').innerText = '€' + formatNumber(gesy);
-        document.getElementById('annualProvidentFund').innerText = '€' + formatNumber(providentFundAmount);
-        document.getElementById('annualUnion').innerText = '€' + formatNumber(unionAmount);
-        document.getElementById('annualNet').innerText = '€' + formatNumber(netSalary);
+        const annualElements = {
+            'annualGross': grossSalary,
+            'annualTaxable': taxableIncome,
+            'annualTax': tax,
+            'annualSocialInsurance': socialInsurance,
+            'annualGesy': gesy,
+            'annualProvidentFund': providentFundAmount,
+            'annualUnion': unionAmount,
+            'annualTotalDeductions': effectiveDeductions, // Use effective deductions (capped at 20%)
+            'annualNet': netSalary
+        };
 
-        // Display the monthly amounts by dividing the annual values by 12.
-        document.getElementById('monthlyGross').innerText = '€' + formatNumber(grossSalary / numberOfSalaries);
-        document.getElementById('monthlyTaxable').innerText = '€' + formatNumber(taxableIncome / numberOfSalaries);
-        document.getElementById('monthlyTax').innerText = '€' + formatNumber(tax / numberOfSalaries);
-        document.getElementById('monthlySocialInsurance').innerText = '€' + formatNumber(socialInsurance / numberOfSalaries);
-        document.getElementById('monthlyGesy').innerText = '€' + formatNumber(gesy / numberOfSalaries);
-        document.getElementById('monthlyProvidentFund').innerText = '€' + formatNumber(providentFundAmount / 12);
-        document.getElementById('monthlyUnion').innerText = '€' + formatNumber(unionAmount / numberOfSalaries);
-        document.getElementById('monthlyNet').innerText = '€' + formatNumber(netSalary / numberOfSalaries);
+        Object.entries(annualElements).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.innerText = '€' + formatNumber(value);
+            }
+        });
 
-    }, 500); // End of setTimeout with a delay of 500 milliseconds.
+        // Display deductions percentage
+        const annualDeductionsPercentageElement = document.getElementById('annualDeductionsPercentage');
+        if (annualDeductionsPercentageElement) {
+            if (deductionsWarning) {
+                // Show the effective percentage (20%) when limit is exceeded
+                annualDeductionsPercentageElement.innerText = formatNumber(deductionsWarning.effectivePercentage) + '% (capped)';
+                annualDeductionsPercentageElement.classList.add('text-orange-600');
+            } else {
+                annualDeductionsPercentageElement.innerText = formatNumber(deductionsPercentage) + '%';
+                annualDeductionsPercentageElement.classList.remove('text-orange-600');
+            }
+        }
+
+        // Display the monthly amounts by dividing the annual values by the number of salaries.
+        const monthlyElements = {
+            'monthlyGross': grossSalary / numberOfSalaries,
+            'monthlyTaxable': taxableIncome / numberOfSalaries,
+            'monthlyTax': tax / numberOfSalaries,
+            'monthlySocialInsurance': socialInsurance / numberOfSalaries,
+            'monthlyGesy': gesy / numberOfSalaries,
+            'monthlyProvidentFund': providentFundAmount / 12,
+            'monthlyUnion': unionAmount / numberOfSalaries,
+            'monthlyTotalDeductions': effectiveDeductions / numberOfSalaries, // Use effective deductions (capped at 20%)
+            'monthlyNet': netSalary / numberOfSalaries
+        };
+
+        Object.entries(monthlyElements).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.innerText = '€' + formatNumber(value);
+            }
+        });
+
+        // Display monthly deductions percentage (same as annual)
+        const monthlyDeductionsPercentageElement = document.getElementById('monthlyDeductionsPercentage');
+        if (monthlyDeductionsPercentageElement) {
+            if (deductionsWarning) {
+                // Show the effective percentage (20%) when limit is exceeded
+                monthlyDeductionsPercentageElement.innerText = formatNumber(deductionsWarning.effectivePercentage) + '% (capped)';
+                monthlyDeductionsPercentageElement.classList.add('text-orange-600');
+            } else {
+                monthlyDeductionsPercentageElement.innerText = formatNumber(deductionsPercentage) + '%';
+                monthlyDeductionsPercentageElement.classList.remove('text-orange-600');
+            }
+        }
+
+        // Handle deductions warning display
+        const deductionsWarningElement = document.getElementById('deductionsWarning');
+        if (deductionsWarningElement) {
+            if (deductionsWarning) {
+                deductionsWarningElement.classList.add('show');
+                const effectiveAmountElement = document.getElementById('effectiveDeductionsAmount');
+                const excessAmountElement = document.getElementById('excessDeductionsAmount');
+
+                if (effectiveAmountElement) {
+                    effectiveAmountElement.innerText = '€' + formatNumber(deductionsWarning.effectiveAmount);
+                }
+                if (excessAmountElement) {
+                    excessAmountElement.innerText = '€' + formatNumber(deductionsWarning.excessAmount);
+                }
+            } else {
+                deductionsWarningElement.classList.remove('show');
+            }
+        }
+
+    }, 100); // Reduced timeout for better responsiveness
 }
 
 
