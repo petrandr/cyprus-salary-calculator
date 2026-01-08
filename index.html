@@ -47,6 +47,36 @@
         </div>
     </div>
 
+    <!-- Mobile Menu Button -->
+    <div class="mobile-menu-button">
+        <button onclick="toggleMobileMenu()" class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenuOverlay" class="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+    
+    <!-- Mobile Menu Panel -->
+    <div id="mobileMenuPanel" class="mobile-menu-panel">
+        <div class="mobile-menu-header">
+            <h3 class="text-lg font-bold text-gray-800">Menu</h3>
+            <button class="mobile-menu-close" onclick="closeMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-content">
+            <button class="mobile-menu-item" onclick="toggleOffcanvas(); closeMobileMenu();">
+                <i class="fas fa-info-circle mr-3"></i>
+                <span class="howItWorksButton">How It Works</span>
+            </button>
+            <button class="mobile-menu-item" onclick="printResults(); closeMobileMenu();">
+                <i class="fas fa-print mr-3"></i>
+                <span class="printButton">Print</span>
+            </button>
+        </div>
+    </div>
+
     <div class="container mx-auto px-4 py-8 max-w-7xl">
         <!-- Header -->
         <div class="text-center mb-12">
@@ -64,7 +94,7 @@
                 <div class="glass-card rounded-2xl p-6 md:p-8">
                     <div class="flex justify-between items-center mb-8">
                         <h2 class="salaryCalculatorTitle text-2xl font-bold text-gray-800">Salary Calculator</h2>
-                        <div class="flex gap-3">
+                        <div class="desktop-buttons flex gap-3">
                             <button class="btn-secondary" onclick="toggleOffcanvas()">
                                 <i class="fas fa-info-circle mr-2"></i><span class="howItWorksButton">How It Works</span>
                             </button>
@@ -452,8 +482,28 @@
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 closeOffcanvas();
+                closeMobileMenu();
             }
         });
+
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobileMenuOverlay');
+            const panel = document.getElementById('mobileMenuPanel');
+            
+            overlay.classList.add('active');
+            panel.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            const overlay = document.getElementById('mobileMenuOverlay');
+            const panel = document.getElementById('mobileMenuPanel');
+            
+            overlay.classList.remove('active');
+            panel.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
     </script>
 </body>
 

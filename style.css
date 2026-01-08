@@ -303,54 +303,52 @@ body {
     .container {
         padding: 12px;
     }
-    
+
     .glass-card {
         margin: 12px 0;
         padding: 16px !important;
     }
-    
+
     .result-card {
         padding: 16px;
     }
-    
+
     .result-item.net {
         margin: 16px -16px -16px -16px;
         padding: 16px;
     }
-    
+
     .language-selector {
         position: static;
         margin-bottom: 24px;
         text-align: center;
         padding-top: 16px;
     }
-    
+
     .language-toggle {
         display: inline-flex;
         margin: 0 auto;
         transform: scale(1.1);
     }
-    
-    /* Mobile header adjustments */
+
+    /* Show mobile menu button, hide desktop buttons */
+    .mobile-menu-button {
+        display: block !important;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+    }
+
+    .desktop-buttons {
+        display: none !important;
+    }
+
+    /* Mobile header adjustments - remove the complex flex changes since buttons are hidden */
     .glass-card .flex.justify-between.items-center {
-        flex-direction: column;
-        gap: 16px;
-        align-items: stretch;
-    }
-    
-    .glass-card .flex.gap-3 {
-        flex-direction: column;
-        gap: 12px;
-        width: 100%;
-    }
-    
-    .glass-card .flex.gap-3 button {
-        width: 100%;
         justify-content: center;
-        padding: 14px 20px;
-        font-size: 16px;
     }
-    
+
     /* Mobile specific input field adjustments */
     .input-flex-container {
         display: flex;
@@ -358,43 +356,43 @@ body {
         align-items: stretch;
         width: 100%;
     }
-    
+
     .input-flex-container .flex-1 {
         flex: 2.5;
         min-width: 0;
         max-width: none;
     }
-    
+
     .input-flex-container .w-32 {
         flex: 1;
         min-width: 80px;
         max-width: 100px;
         width: auto;
     }
-    
+
     .input-field {
         min-width: 0 !important;
         width: 100%;
         padding: 10px 12px;
         font-size: 16px;
     }
-    
+
     .input-field.has-prefix {
         min-width: 0 !important;
         padding-left: 32px;
     }
-    
+
     .input-prefix {
         left: 12px;
         font-size: 14px;
     }
-    
+
     /* Ensure grid doesn't overflow */
     .grid.md\\:grid-cols-2 {
         grid-template-columns: 1fr;
         gap: 16px;
     }
-    
+
     /* Reduce container padding on very small screens */
     .glass-card .p-6,
     .glass-card .md\\:p-8 {
@@ -407,30 +405,30 @@ body {
     .container {
         padding: 8px;
     }
-    
+
     .glass-card {
         margin: 8px 0;
         padding: 12px !important;
     }
-    
+
     .input-flex-container {
         gap: 4px;
     }
-    
+
     .input-flex-container .w-32 {
         min-width: 70px;
         max-width: 85px;
     }
-    
+
     .input-field {
         padding: 8px 10px;
         font-size: 16px;
     }
-    
+
     .input-field.has-prefix {
         padding-left: 28px;
     }
-    
+
     .input-prefix {
         left: 10px;
         font-size: 13px;
@@ -444,30 +442,30 @@ body {
         gap: 8px;
         align-items: stretch;
     }
-    
+
     .input-flex-container .flex-1 {
         flex: 2;
         min-width: 200px;
     }
-    
+
     .input-flex-container .w-32 {
         flex: 0 0 140px;
         width: 140px;
     }
-    
+
     .input-field {
         min-width: 140px;
     }
-    
+
     .input-field.has-prefix {
         min-width: 160px;
     }
-    
+
     /* Align grid items to start */
     .grid.lg\\:grid-cols-3 {
         align-items: start;
     }
-    
+
     /* Make the info section more compact */
     .collapsible-section {
         position: sticky;
@@ -493,7 +491,124 @@ body {
     text-decoration: underline;
 }
 
-/* Offcanvas Styles */
+/* Mobile Menu Styles */
+.mobile-menu-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: none;
+}
+
+.menu-toggle {
+    backdrop-filter: blur(10px);
+    padding: 12px;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle:hover {
+    background: var(--primary-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-menu-panel {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100%;
+    background: white;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    z-index: 1002;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+}
+
+.mobile-menu-panel.active {
+    left: 0;
+}
+
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+}
+
+.mobile-menu-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--text-primary);
+}
+
+.mobile-menu-content {
+    padding: 20px 0;
+}
+
+.mobile-menu-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 16px 20px;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 16px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.mobile-menu-item:hover {
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    color: var(--primary-color);
+}
+
+.mobile-menu-item:last-child {
+    border-bottom: none;
+}
+
+.desktop-buttons {
+    display: flex;
+}
+
 .offcanvas-overlay {
     position: fixed;
     top: 0;
@@ -565,11 +680,11 @@ body {
         width: 100%;
         right: -100%;
     }
-    
+
     .offcanvas-header {
         padding: 16px;
     }
-    
+
     .offcanvas-content {
         padding: 16px;
     }
