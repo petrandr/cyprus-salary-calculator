@@ -493,7 +493,7 @@ body {
 
 /* Mobile Menu Styles */
 .mobile-menu-button {
-    position: fixed;
+    position: absolute;
     top: 20px;
     left: 20px;
     z-index: 1000;
