@@ -1,3 +1,4 @@
+console.log(GA_MEASUREMENT_ID);
 document.addEventListener('DOMContentLoaded', function () {
     // Select all input and select elements
     const elements = document.querySelectorAll('input, select:not(#languageSelect)');

@@ -299,6 +299,10 @@ body {
     display: block;
 }
 
+.disclaimer-notice {
+    display: block;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 12px;

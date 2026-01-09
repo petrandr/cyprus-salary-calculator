@@ -56,6 +56,9 @@ const translations = {
         deductionsWarningText: "Under Cyprus tax law, personal tax deductions are limited to 20% of chargeable income.",
         effectiveDeductionsLabel: "Maximum allowable deductions:",
         excessDeductionsLabel: "Amount exceeding limit:",
+        disclaimerNoticeTitle: "Important Notice",
+        disclaimerNoticeText: "This is an independent salary calculator and is not an official application from the Cyprus government or any government agency.",
+        disclaimerNoticeSubtext: "Results are estimates based on current tax laws and should be verified with official sources or tax professionals.",
         createdByText: "Created by",
     },
     gr: {
@@ -113,6 +116,9 @@ const translations = {
         deductionsWarningText: "Σύμφωνα με τον κυπριακό φορολογικό νόμο, οι προσωπικές φορολογικές εκπτώσεις περιορίζονται στο 20% του φορολογητέου εισοδήματος.",
         effectiveDeductionsLabel: "Μέγιστες επιτρεπόμενες εκπτώσεις:",
         excessDeductionsLabel: "Ποσό που υπερβαίνει το όριο:",
+        disclaimerNoticeTitle: "Σημαντική Ειδοποίηση",
+        disclaimerNoticeText: "Αυτός είναι ένας ανεξάρτητος υπολογιστής μισθού και δεν είναι επίσημη εφαρμογή της κυπριακής κυβέρνησης ή οποιουδήποτε κυβερνητικού οργανισμού.",
+        disclaimerNoticeSubtext: "Τα αποτελέσματα είναι εκτιμήσεις βασισμένες στους τρέχοντες φορολογικούς νόμους και θα πρέπει να επαληθεύονται με επίσημες πηγές ή φορολογικούς συμβούλους.",
         createdByText: "Δημιουργήθηκε από",
     }
 };
