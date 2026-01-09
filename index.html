@@ -31,6 +31,10 @@
     <link rel="canonical" href="https://cyprus-salary-calculator.github.io/">
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 
+    <!-- Google Analytics -->
+    <script src="scripts/vars.js"></script>
+
+
     <!-- Modern CSS Framework -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -453,91 +457,83 @@
         </div>
     </footer>
 
-    <script src="scripts/vars.js"></script>
+    <!-- Cookie Consent Backdrop -->
+    <div id="cookieConsentBackdrop" class="cookie-consent-backdrop"></div>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookieConsentBanner" class="cookie-consent-banner">
+        <div class="cookie-consent-content">
+            <div class="cookie-consent-text">
+                <h4 class="cookieConsentTitle font-semibold text-gray-800 mb-2">Cookie Consent</h4>
+                <p class="cookieConsentText text-sm text-gray-600 mb-3">
+                    We use cookies and similar technologies to analyze website traffic and improve your experience.
+                    This includes Google Analytics for understanding how visitors use our site.
+                </p>
+                <p class="cookieConsentDetails text-xs text-gray-500 mb-4">
+                    You can accept all cookies or manage your preferences. You can change your settings at any time.
+                </p>
+            </div>
+            <div class="cookie-consent-buttons">
+                <button id="acceptAllCookies" class="btn-primary cookie-btn">
+                    <span class="acceptAllCookiesText">Accept All</span>
+                </button>
+                <button id="acceptNecessaryCookies" class="btn-secondary cookie-btn">
+                    <span class="acceptNecessaryCookiesText">Necessary Only</span>
+                </button>
+                <button id="manageCookies" class="btn-link cookie-btn">
+                    <span class="manageCookiesText">Manage Preferences</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Settings Modal -->
+    <div id="cookieSettingsModal" class="cookie-settings-modal">
+        <div class="cookie-settings-overlay" onclick="closeCookieSettings()"></div>
+        <div class="cookie-settings-panel">
+            <div class="cookie-settings-header">
+                <h3 class="cookieSettingsTitle text-xl font-bold text-gray-800">Cookie Preferences</h3>
+                <button class="cookie-settings-close" onclick="closeCookieSettings()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="cookie-settings-content">
+                <div class="cookie-category">
+                    <div class="cookie-category-header">
+                        <h4 class="necessaryCookiesTitle font-semibold text-gray-800">Necessary Cookies</h4>
+                        <span class="cookie-status enabled">Always Active</span>
+                    </div>
+                    <p class="necessaryCookiesText text-sm text-gray-600 mb-4">
+                        These cookies are essential for the website to function properly. They enable basic features
+                        like page navigation and access to secure areas.
+                    </p>
+                </div>
+                <div class="cookie-category">
+                    <div class="cookie-category-header">
+                        <h4 class="analyticsCookiesTitle font-semibold text-gray-800">Analytics Cookies</h4>
+                        <label class="cookie-toggle">
+                            <input type="checkbox" id="analyticsCookiesToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <p class="analyticsCookiesText text-sm text-gray-600 mb-4">
+                        These cookies help us understand how visitors interact with our website by collecting and
+                        reporting information anonymously via Google Analytics.
+                    </p>
+                </div>
+            </div>
+            <div class="cookie-settings-footer">
+                <button id="saveCookiePreferences" class="btn-primary">
+                    <span class="saveCookiePreferencesText">Save Preferences</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="scripts/main.js"></script>
     <script src="scripts/language.js"></script>
-    <script>
-        function printResults() {
-            const resultsContainer = document.getElementById('resultsContainer');
-            if (resultsContainer.classList.contains('hidden')) {
-                alert('Please calculate your salary first!');
-                return;
-            }
-
-            const printContent = resultsContainer.innerHTML;
-            const printWindow = window.open('', '', 'width=800,height=600');
-
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Cyprus Salary Calculator Results</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; }
-                        .result-card { margin-bottom: 20px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
-                        .result-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
-                        .result-item:last-child { border-bottom: none; }
-                        .net { background: #f0f9ff; font-weight: bold; }
-                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
-                        th { background: #f5f5f5; }
-                    </style>
-                </head>
-                <body>
-                    <h1>Cyprus Salary Calculator Results</h1>
-                    ${printContent}
-                    <script>window.onload = function() { window.print(); }<\/script>
-                </body>
-                </html>
-            `);
-
-            printWindow.document.close();
-        }
-
-        function toggleOffcanvas() {
-            const overlay = document.getElementById('offcanvasOverlay');
-            const panel = document.getElementById('offcanvasPanel');
-
-            overlay.classList.add('active');
-            panel.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeOffcanvas() {
-            const overlay = document.getElementById('offcanvasOverlay');
-            const panel = document.getElementById('offcanvasPanel');
-
-            overlay.classList.remove('active');
-            panel.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close offcanvas with Escape key
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                closeOffcanvas();
-                closeMobileMenu();
-            }
-        });
-
-        // Mobile menu functions
-        function toggleMobileMenu() {
-            const overlay = document.getElementById('mobileMenuOverlay');
-            const panel = document.getElementById('mobileMenuPanel');
-
-            overlay.classList.add('active');
-            panel.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeMobileMenu() {
-            const overlay = document.getElementById('mobileMenuOverlay');
-            const panel = document.getElementById('mobileMenuPanel');
-
-            overlay.classList.remove('active');
-            panel.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-    </script>
+    <script src="scripts/cookies.js"></script>
+    <script src="scripts/ui.js"></script>
 </body>
 
 </html>
